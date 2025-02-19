@@ -6,3 +6,14 @@
     font-size: 9rem;
     padding: 10px 20px;
 }
+.error-bg {
+    background-image: url("ruta/a/tu/imagen.svg");
+}
+
+.tracking-tighter-less {
+    letter-spacing: -0.75rem;
+}
+
+.text-shadow {
+    text-shadow: -8px 0 0 rgb(102 123 242);
+}

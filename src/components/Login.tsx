@@ -34,7 +34,7 @@ export default function Login() {
                 >
                     {/* Lado Login */}
                     <div
-                        className="absolute w-full h-full flex flex-col items-center justify-center  rounded-lg shadow-md p-6"
+                        className="absolute w-full h-full flex flex-col items-center justify-center  rounded-lg shadow-md p-6 pb-0"
                         style={{ backfaceVisibility: "hidden" }}
                     >
                         <h2 className="text-xl font-bold mb-4">Iniciar Sesión</h2>

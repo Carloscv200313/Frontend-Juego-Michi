@@ -3,6 +3,8 @@ import { useLocation } from "react-router";
 import { useState, useContext } from "react";
 import EsperandoJugadores from "./components/Espera";
 import TresRaya from "./components/TesRaya";
+import { motion } from "framer-motion";
+import { Error } from "./components/Error";
 interface Datos {
     id: string;
     name: string;
@@ -12,19 +14,19 @@ interface Datos {
     estado: boolean
     ganados: number
     perdidos: number
-    empate:number
+    empate: number
 }
 export const Raya = () => {
     const location = useLocation();
     const { online, socket, cantidad } = useContext(SocketContext)
-    const {nombre, usuario, password} = location.state;
+    const { nombre, usuario, password } = location.state;
     const [activo, setActivo] = useState(false)
     const [start, setStart] = useState(false)
     const [jugadores, setJugadores] = useState<Datos[]>([])
     const [datos, setDatos] = useState<Datos>({ id: "", name: "", user: "", password: "", idSocket: "", estado: false, ganados: 0, perdidos: 0, empate: 0 })
     const [idBatalla, setIdBatalla] = useState("")
     socket.on("connect", () => {
-        socket.emit("registrar", {nombre, usuario, password})
+        socket.emit("registrar", { nombre, usuario, password })
         socket.on("dato-del-usuario", (dato) => { setDatos(dato.usuario) })
     })
     console.log(socket)
@@ -41,68 +43,78 @@ export const Raya = () => {
         })
         setActivo(true)
     }
+    interface CardProps {
+        title: string;
+        value: string | number;
+        color: string;
+        isMono?: boolean;
+    }
+
+    const Card = ({ title, value, color, isMono = false }: CardProps) => {
+        return (
+            <motion.div
+                className="bg-[#121212] p-4 rounded-xl shadow-lg border border-[#2a2a2a] text-white flex flex-col items-center relative h-28"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, rotate: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <span className="text-gray-400 font-medium text-xl">{title}:</span>
+                <span className={`font-bold text-2xl text-center h-full ${color} ${isMono ? "font-mono" : ""}`}>{value}</span>
+            </motion.div>
+        );
+    };
+
     if (activo && !start) {
         return (
             <EsperandoJugadores activo={activo} setActivo={setActivo} />
         )
     }
-    if (!activo && !start) 
-    {
+    if (!activo && !start) {
         return (
-            <div className="w-full max-w-md mx-auto shadow-lg border rounded-lg p-4 m-10">
-                
-                <div className="text-center">
-                    <h2 className="text-2xl font-bold">Perfil del Jugador</h2>
-                    <span
-                        className={`px-3 py-1 text-sm font-semibold rounded-full ${online ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"
-                            }`}
-                    >
-                        {online ? "En línea" : "Desconectado"}
-                    </span>
+            <div className="relative h-screen w-full bg-black overflow-hidden">
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
+
+                <div className="absolute bottom-0 right-[0%] top-[-15%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]">
                 </div>
-
-                {/* Contenido */}
-                <div className="space-y-4 mt-4">
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center space-x-2">
-                            <span className="font-medium">Jugadores en línea:</span>
+                {online ? "Desconectado " : <Error />}
+                <div className="relative w-full min-h-screen p-5 text-white grid grid-cols-2 place-items-center">
+                    <div className="flex flex-col items-center xl:justify-center gap-4 h-full">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-7xl  p-4">
+                            {/* Card: Nombre */}
+                            <Card title="Nombre" value={datos.name} color="text-white" />
+                            {/* Card: Jugadores en línea */}
+                            <Card title="Jugadores en línea" value={cantidad} color="text-blue-500" />
+                            {/* Card: ID */}
+                            <Card title="ID" value={datos.id} color="text-purple-500" isMono />
+                            {/* Card: Juegos Ganados */}
+                            <Card title="Ganados" value={datos.ganados} color="text-green-500" />
+                            {/* Card: Juegos Perdidos */}
+                            <Card title="Perdidos" value={datos.perdidos} color="text-red-500" />
                         </div>
-                        <span className="font-bold text-blue-600">{cantidad}</span>
+                        <motion.button
+                            className="mt-4 bg-[#2563eb] text-white font-bold py-5 text-5xl rounded-3xl shadow-lg border border-[#592118] relative overflow-hidden transition-all duration-300 w-2/4 cursor-pointer"
+                            onClick={Jugar}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                            whileHover={{
+                                scale: 1.05,
+                                boxShadow: "0px 0px 20px rgba(59, 130, 246, 0.6)",
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                        >
+                            𝕵𝖚𝖌𝖆𝖗
+                        </motion.button>
                     </div>
-
-                    <div className="flex items-center space-x-2">
-                        <span className="font-medium">Nombre:</span>
-                        <span className="font-bold">{datos.name}</span>
+                    <div className="h-full flex justify-center xl:items-center">
+                        <img src="/personaje.gif" alt="Personaje animado" className="h-4/5" />
                     </div>
-
-                    <div className="flex items-center space-x-2">
-                        <span className="font-medium">ID:</span>
-                        <span className="font-mono">{datos.id}</span>
-                    </div>
-
-                    <div className="flex justify-between">
-                        <div className="flex items-center space-x-2">
-                            <span className="font-medium">Ganados:</span>
-                            <span className="font-bold text-green-600">{datos.ganados}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                            <span className="font-medium">Perdidos:</span>
-                            <span className="font-bold text-red-600">{datos.perdidos}</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Pie de página */}
-                <div className="mt-4">
-                    <button className={`w-full bg-blue-500 text-white font-bold py-2 rounded-lg hover:bg-blue-600 cursor-pointer`}
-                        onClick={Jugar}>
-                        Jugar
-                    </button>
                 </div>
             </div>
         )
     }
-        if (start) {
+    if (start) {
         return (
             <main className="flex min-h-screen flex-col items-center justify-center p-24">
                 <TresRaya jugadoress={jugadores} usuario={datos} idBatalla={idBatalla} />
