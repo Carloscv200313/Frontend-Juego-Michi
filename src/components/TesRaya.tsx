@@ -11,7 +11,7 @@ interface Jugador {
     estado: boolean
     ganados: number
     perdidos: number
-    empate:number
+    empate: number
 }
 
 interface Props {
@@ -49,17 +49,17 @@ export default function TresRaya({ jugadoress, usuario, idBatalla }: Props) {
                 return nuevoTablero;
             });
         });
-    
+
         socket.on("turno", ({ turno }) => {
             setEsMiTurno(turno);
         });
-    
+
         return () => {
             socket.off("movimiento-realizado");
             socket.off("turno");
         };
     }, [socket, asignaciones]);
-    
+
 
     const verificarGanador = (cuadros: (string | null)[]) => {
         const lineasGanadoras = [
@@ -94,55 +94,71 @@ export default function TresRaya({ jugadoress, usuario, idBatalla }: Props) {
     };
 
     return (
-        <div className="w-[350px] p-4 border rounded-lg shadow-md bg-white">
-            <h2 className="text-center text-xl font-bold mb-4">Tres en Raya</h2>
-
-            {/* Lista de jugadores con indicador de turno */}
-            <div className="mb-4">
-                {jugadoress.map((jugador) => (
-                    <p 
-                        key={jugador.id} 
-                        className={`text-lg font-semibold ${
-                            jugador.id === usuario.id && esMiTurno ? "text-green-500" : "text-gray-700"
-                        }`}
-                    >
-                        {jugador.name} {usuario.id === jugador.id && esMiTurno ? "⭐ (Tu turno)" : ""}
-                    </p>
-                ))}
-            </div>
-
-            {/* Tablero */}
-            <div className="grid grid-cols-3 gap-2 mb-4">
-                {tablero.map((cuadro, index) => (
-                    <motion.button
-                        key={index}
-                        className={`w-20 h-20 text-4xl font-bold flex items-center justify-center rounded-md
-                            ${cuadro === "X" ? "text-blue-500" : cuadro === "O" ? "text-red-500" : "text-gray-700"}
-                            ${!tablero[index] && esMiTurno && !ganador ? "bg-gray-200 hover:bg-gray-300" : "bg-gray-100"}
-                        `}
-                        onClick={() => manejarClick(index)}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        disabled={!!tablero[index] || !esMiTurno || ganador !== null}
-                    >
-                        {cuadro}
-                    </motion.button>
-                ))}
-            </div>
-
-            {/* Mensaje de turno o ganador */}
-            <div className="text-center">
-                {ganador ? (
-                    <p className="text-xl font-bold">{ganador === "Empate" ? "¡Empate!" : `Ganador: ${ganador}`}</p>
-                ) : (
-                    <p className="text-xl">
-                        Turno de:{" "}
-                        <span className="font-bold text-green-500">
-                            {esMiTurno ? "Tu turno" : "Esperando al otro jugador..."}
-                        </span>
-                    </p>
-                )}
-            </div>
+<div className="absolute inset-0 bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] grid grid-cols-3 items-center justify-items-center p-4">
+    {/* Jugador 1 */}
+    <div className={`flex flex-col items-center justify-center text-5xl font-serif p-4 
+        ${esMiTurno && usuario.id === jugadoress[0].id ? "text-white" : "text-cyan-600"}`}>
+        <p>
+            {jugadoress[0].name.toUpperCase()} 
+            {!esMiTurno && usuario.id === jugadoress[0].id ? " ⭐" : ""}
+        </p>
+        <div className="flex justify-center">
+            <img src="/personaje-01.gif" alt="Personaje animado" className="h-80" />
         </div>
+    </div>
+
+    {/* Tablero */}
+    <div className="relative w-full max-w-lg h-auto p-6 border rounded-lg shadow-md bg-black/30 drop-shadow-xl text-white text-center">
+        <h2 className="text-xl font-bold mb-4">Tres en Raya</h2>
+
+        {/* Tablero del juego */}
+        <div className="grid grid-cols-3 gap-2 mb-4">
+            {tablero.map((cuadro, index) => (
+                <motion.button
+                    key={index}
+                    className={`w-24 h-24 text-4xl font-bold flex items-center justify-center rounded-md
+                        ${cuadro === "X" ? "text-blue-500" : cuadro === "O" ? "text-red-500" : "text-gray-700"}
+                        ${!tablero[index] && esMiTurno && !ganador ? "bg-gray-200 hover:bg-gray-300" : "bg-gray-100"}
+                    `}
+                    onClick={() => manejarClick(index)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    disabled={!!tablero[index] || !esMiTurno || ganador !== null}
+                >
+                    {cuadro}
+                </motion.button>
+            ))}
+        </div>
+
+        {/* Mensaje de turno o ganador */}
+        <div className="text-center">
+            {ganador ? (
+                <p className="text-xl font-bold">{ganador === "Empate" ? "¡Empate!" : `Ganador: ${ganador}`}</p>
+            ) : (
+                <p className="text-xl">
+                    Turno de:{" "}
+                    <span className="font-bold text-green-500">
+                        {esMiTurno ? "Tu turno" : "Esperando al otro jugador..."}
+                    </span>
+                </p>
+            )}
+        </div>
+    </div>
+
+    {/* Jugador 2 */}
+    <div className={`flex flex-col items-center justify-center text-5xl font-serif p-4 
+        ${!esMiTurno && usuario.id === jugadoress[1].id ? "text-white" : "text-cyan-600"}`}>
+        <p>
+            {jugadoress[1].name.toUpperCase()} 
+            {esMiTurno && usuario.id === jugadoress[1].id ? " ⭐" : ""}
+        </p>
+        <div className="flex justify-center">
+            <img src="/personaje.gif" alt="Personaje animado" className="h-80" />
+        </div>
+    </div>
+</div>
+
+
+
     );
 }

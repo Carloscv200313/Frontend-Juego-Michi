@@ -22,7 +22,6 @@ export default function EsperandoJugadores({ activo, setActivo }: Props) {
         if(contador==0){
             setActivo(false)
         }
-        
         return () => {
             if (intervalo) clearInterval(intervalo)
         }

@@ -60,7 +60,7 @@ export const Raya = () => {
                 transition={{ duration: 0.5 }}
             >
                 <span className="text-gray-400 font-medium text-xl">{title}:</span>
-                <span className={`font-bold text-2xl text-center h-full ${color} ${isMono ? "font-mono" : ""}`}>{value}</span>
+                <span className={`font-bold text-2xl text-center h-full ${color} ${isMono ? "font-mono" : ""}`}>{typeof value === 'string' ? value.toUpperCase() : value}</span>
             </motion.div>
         );
     };
@@ -77,16 +77,14 @@ export const Raya = () => {
 
                 <div className="absolute bottom-0 right-[0%] top-[-15%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]">
                 </div>
-                {online ? "Desconectado " : <Error />}
+                {(!online || !datos.name) && <Error />}
                 <div className="relative w-full min-h-screen p-5 text-white grid grid-cols-2 place-items-center">
                     <div className="flex flex-col items-center xl:justify-center gap-4 h-full">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 max-w-7xl  p-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 xl:w-3xl w-2xl  p-4">
                             {/* Card: Nombre */}
-                            <Card title="Nombre" value={datos.name} color="text-white" />
+                            <Card title="Nombre" value={datos.name} color="text-purple-500" />
                             {/* Card: Jugadores en línea */}
-                            <Card title="Jugadores en línea" value={cantidad} color="text-blue-500" />
-                            {/* Card: ID */}
-                            <Card title="ID" value={datos.id} color="text-purple-500" isMono />
+                            <Card title="Jugadores en línea" value={cantidad} color="text-blue-500"/>
                             {/* Card: Juegos Ganados */}
                             <Card title="Ganados" value={datos.ganados} color="text-green-500" />
                             {/* Card: Juegos Perdidos */}
