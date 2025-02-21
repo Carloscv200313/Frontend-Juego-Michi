@@ -4,7 +4,8 @@ import { useState, useContext } from "react";
 import EsperandoJugadores from "./components/Espera";
 import TresRaya from "./components/TesRaya";
 import { motion } from "framer-motion";
-import { Error } from "./components/Error";
+import { Error } from "./error/Error";
+import Login from "./error/Loading";
 interface Datos {
     id: string;
     name: string;
@@ -77,7 +78,8 @@ export const Raya = () => {
 
                 <div className="absolute bottom-0 right-[0%] top-[-15%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]">
                 </div>
-                {(!online || !datos.name) && <Error />}
+                {(!nombre) && <Error/>}
+                {(!online) && <Login/>}
                 <div className="relative w-full min-h-screen p-5 text-white grid grid-cols-2 place-items-center">
                     <div className="flex flex-col items-center xl:justify-center gap-4 h-full">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 xl:w-3xl w-2xl  p-4">

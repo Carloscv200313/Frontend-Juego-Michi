@@ -2,7 +2,7 @@ import { createContext } from "react";
 import { io, Socket } from "socket.io-client";
 export const SocketContext = createContext<SocketContextType>({
     socket: io(), // Crea un socket temporal, pero NO se usará realmente
-    online: false,
+    online: true,
     cantidad: 0
 });
 

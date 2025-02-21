@@ -5,6 +5,9 @@ export const useSocket = (serverPath: string) => {
     const [online, setOnline] = useState(false)
     const [cantidad, setCantidad] = useState(0)
     useEffect(() => {
+        setOnline(socket.connected)
+    }, [socket])
+    useEffect(() => {
         socket.on("connect", () => {
             setOnline(true)
             socket.on("catidad-de-connectados", (dato) => {
