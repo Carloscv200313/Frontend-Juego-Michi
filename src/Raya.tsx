@@ -78,11 +78,11 @@ export const Raya = () => {
 
                 <div className="absolute bottom-0 right-[0%] top-[-15%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]">
                 </div>
-                {(!nombre) && <Error/>}
+                {(!datos.name) && <Error/>}
                 {(!online) && <Login/>}
                 <div className="relative w-full min-h-screen p-5 text-white grid grid-cols-2 place-items-center">
                     <div className="flex flex-col items-center xl:justify-center gap-4 h-full">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 xl:w-3xl w-2xl  p-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 xl:w-2xl w-2xl  p-4">
                             {/* Card: Nombre */}
                             <Card title="Nombre" value={datos.name} color="text-purple-500" />
                             {/* Card: Jugadores en línea */}
