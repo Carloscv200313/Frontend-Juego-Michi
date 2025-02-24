@@ -100,9 +100,6 @@ export default function TresRaya({ jugadoress, usuario, idBatalla }: Props) {
             setGanador("Empate");
         }
     };
-    const onReiniciar = () => {
-
-    }
     const onInicio = () => {
         window.location.reload();
     }
@@ -121,14 +118,8 @@ export default function TresRaya({ jugadoress, usuario, idBatalla }: Props) {
 
                 <div className="mt-6 flex justify-center items-center gap-4">
                     <button
-                        onClick={onReiniciar}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
-                    >
-                        🔄 Volver a jugar
-                    </button>
-                    <button
                         onClick={onInicio}
-                        className="px-4 py-2 bg-gray-500 text-white rounded-lg shadow-md hover:bg-gray-600 transition"
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition cursor-pointer"
                     >
                         🏠 Volver al inicio
                     </button>
