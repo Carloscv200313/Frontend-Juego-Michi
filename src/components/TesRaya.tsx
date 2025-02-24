@@ -1,8 +1,6 @@
 import { useEffect, useState, useContext, useRef } from "react";
 import { motion } from "framer-motion";
 import { SocketContext } from "../context/SocketContex";
-import { useNavigate } from "react-router";
-
 interface Jugador {
     id: string;
     name: string;
@@ -29,7 +27,6 @@ export default function TresRaya({ jugadoress, usuario, idBatalla }: Props) {
     const [esMiTurno, setEsMiTurno] = useState(false);
     const [asignaciones, setAsignaciones] = useState<{ [key: string]: "X" | "O" }>({});
     const { socket } = useContext(SocketContext);
-    const navigate = useNavigate();
     useEffect(() => {
         if (jugadoress.length >= 2) {
             setAsignaciones({
@@ -107,21 +104,22 @@ export default function TresRaya({ jugadoress, usuario, idBatalla }: Props) {
 
     }
     const onInicio = () => {
-        navigate("/Raya");
+        window.location.reload();
     }
+    
 
     return (
         <div className="absolute inset-0 bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#000000_1px)] bg-[size:20px_20px] flex items-center justify-center">
             <dialog
                 ref={modalRef}
                 className={ `flex flex-col justify-between items-center p-6 bg-gradient-to-t from-gray-600 to-gray-300 shadow-xl border border-gray-800 rounded-4xl w-2xl xl:h-1/2 h-2/3 text-center fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${!gana ? 'hidden' : ''}`}            >
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">🎉 ¡Tenemos un ganador! 🎉</h1>
+                <h1 className="md:text-4xl text-2xl font-bold text-gray-900 mb-4">🎉 ¡Tenemos un ganador! 🎉</h1>
                 <div>
-                    <p className="text-8xl text-gray-800 font-bold">{gana?.name}</p>
+                    <p className="md:text-8xl text-5xl text-gray-800 font-bold">{gana?.name}</p>
                     <p className="text-2xl text-gray-700 font-semibold">ha ganado la partida</p>
                 </div>
 
-                <div className="mt-6 flex justify-center gap-4">
+                <div className="mt-6 flex justify-center items-center gap-4">
                     <button
                         onClick={onReiniciar}
                         className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
@@ -136,8 +134,8 @@ export default function TresRaya({ jugadoress, usuario, idBatalla }: Props) {
                     </button>
                 </div>
             </dialog>
-            <div className="grid grid-cols-3 items-center justify-items-center p-4">
-                <div className={`flex flex-col items-center justify-center text-5xl font-serif p-4 gap-8 ${esMiTurno && usuario.id === jugadoress[0].id ? "text-white" : "text-cyan-600"}`}>
+            <div className="grid md:grid-cols-3 grid-cols-1 items-center justify-items-center p-4">
+                <div className={`hidden md:flex flex-col items-center justify-center text-5xl font-serif p-4 gap-8 ${esMiTurno && usuario.id === jugadoress[0].id ? "text-white" : "text-cyan-600"}`}>
                     <p>
                         {jugadoress[0].name.toUpperCase()}
                         {esMiTurno && usuario.id === jugadoress[0].id ? " ⭐" : ""}
@@ -182,7 +180,7 @@ export default function TresRaya({ jugadoress, usuario, idBatalla }: Props) {
                     </div>
                 </div>
                 {/* Jugador 2 */}
-                <div className={`flex flex-col items-center justify-center text-5xl font-serif p-4  gap-8
+                <div className={`hidden md:flex flex-col items-center justify-center text-5xl font-serif p-4  gap-8
                         ${esMiTurno && usuario.id === jugadoress[1].id ? "text-white" : "text-cyan-600"}`}>
                     <p>
                         {jugadoress[1].name.toUpperCase()}

@@ -54,46 +54,53 @@ export const Raya = () => {
     const Card = ({ title, value, color, isMono = false }: CardProps) => {
         return (
             <motion.div
-                className="bg-[#121212] p-4 rounded-xl shadow-lg border border-[#2a2a2a] text-white flex flex-col items-center relative h-28"
+                className="bg-[#121212] p-4 rounded-xl shadow-lg border border-[#2a2a2a] flex flex-col items-center relative md:h-28 h-20"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 whileHover={{ scale: 1.05, rotate: 1 }}
                 transition={{ duration: 0.5 }}
             >
-                <span className="text-gray-400 font-medium text-xl">{title}:</span>
-                <span className={`font-bold text-2xl text-center h-full ${color} ${isMono ? "font-mono" : ""}`}>{typeof value === 'string' ? value.toUpperCase() : value}</span>
+                <span className="text-gray-400 font-medium md:text-xl text-base">{title}:</span>
+                <span className={`font-bold md:text-2xl text-xl text-center h-full ${color} ${isMono ? "font-mono" : ""}`}>{typeof value === 'string' ? value.toUpperCase() : value}</span>
             </motion.div>
         );
     };
-
+    if (!online && !activo && !start) {
+        return(
+            <Login />
+        )
+    }
+    if ((!datos.name && !activo && !start)) {
+        return(
+            <Error />
+        )
+    }
     if (activo && !start) {
         return (
             <EsperandoJugadores activo={activo} setActivo={setActivo} />
         )
     }
-    if (!activo && !start) {
-        return (
-            <div className="relative h-screen w-full bg-black overflow-hidden">
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
 
+    if (online && !activo && !start) {
+        return (
+            <div className="reltive h-screen w-full bg-black overflhidden">
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[800px] w-[800px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]"></div>
                 <div className="absolute bottom-0 right-[0%] top-[-15%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]">
                 </div>
-                {(!datos.name) && <Error/>}
-                {(!online) && <Login/>}
-                <div className="relative w-full min-h-screen p-5 text-white grid grid-cols-2 place-items-center">
-                    <div className="flex flex-col items-center xl:justify-center gap-4 h-full">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 xl:w-2xl w-2xl  p-4">
+                <div className="relative w-full min-h-screen p-5 text-white grid md:grid-cols-2 grid-cols-1 place-items-center">
+                    <div className="flex flex-col items-center justify-center gap-4 h-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10 gap-4 xl:w-2xl w-[20rem]  p-4">
                             {/* Card: Nombre */}
                             <Card title="Nombre" value={datos.name} color="text-purple-500" />
                             {/* Card: Jugadores en línea */}
-                            <Card title="Jugadores en línea" value={cantidad} color="text-blue-500"/>
+                            <Card title="Online" value={cantidad} color="text-blue-500" />
                             {/* Card: Juegos Ganados */}
                             <Card title="Ganados" value={datos.ganados} color="text-green-500" />
                             {/* Card: Juegos Perdidos */}
                             <Card title="Perdidos" value={datos.perdidos} color="text-red-500" />
                         </div>
                         <motion.button
-                            className="mt-4 bg-[#2563eb] text-white font-bold py-5 text-5xl rounded-3xl shadow-lg border border-[#592118] relative overflow-hidden transition-all duration-300 w-2/4 cursor-pointer"
+                            className="mt-4 bg-[#2563eb] text-white font-bold py-5 md:text-5xl rounded-3xl shadow-lg border border-[#592118] relative overflow-hidden transition-all duration-300 md:w-2/4 w-2/4 cursor-pointer"
                             onClick={Jugar}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -107,7 +114,7 @@ export const Raya = () => {
                             𝕵𝖚𝖌𝖆𝖗
                         </motion.button>
                     </div>
-                    <div className="h-full flex justify-center xl:items-center">
+                    <div className="h-full hidden md:flex justify-center xl:items-center">
                         <img src="/personaje.gif" alt="Personaje animado" className="h-4/5" />
                     </div>
                 </div>
